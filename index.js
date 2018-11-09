@@ -6,14 +6,7 @@ const app = express();
 const PORT = process.env.PORT | 8888;
 
 
-var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL);
-
-var db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', function (callback) {
-  console.log('db connected to ${process.env.MONGO_UR}');
-})
+var user = require('./mongo_util').User;
 
 app.get("/status", (req, res) => {
     const localTime = (new Date()).toLocaleTimeString();
@@ -29,4 +22,11 @@ app.get("*", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
+
+
+    user.find({}, function (err, users) {
+      console.log(users);
+
+    });
+
 });
